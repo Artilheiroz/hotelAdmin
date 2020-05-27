@@ -1,0 +1,58 @@
+<ng-template #content let-modal>
+  <div class="modal-header text-white bg-primary">
+    Incluir Hospede
+  </div>
+  <div class="modal-body container">
+    <div class="row">
+      <div class="col-md">
+        <div class="form-group">
+          <label for="hospede.nome">Nome</label>
+          <input
+            id="hospede.nome"
+            type="text"
+            class="form-control"
+            [(ngModel)]="hospede.nome"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div class="form-group">
+          <label for="hospede.documento">Documento</label>
+          <input
+            id="hospede.documento"
+            type="text"
+            class="form-control cpf-mask"
+            [(ngModel)]="hospede.documento"
+            mask="000.000.000-00"
+          />
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="hospede.nome">Telefone</label>
+          <input
+            id="hospede.telefone"
+            type="text"
+            class="form-control"
+            [(ngModel)]="hospede.telefone"
+            mask="(00)0?0000-0000"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" (click)="modal.close()">
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="salvarHospede()">
+      Salvar
+    </button>
+  </div>
+</ng-template>
+
+<button class="btn btn-primary" (click)="open(content)">
+  Incluir Pessoa
+</button>

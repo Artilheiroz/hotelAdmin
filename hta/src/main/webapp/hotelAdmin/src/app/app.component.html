@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <div class="mt-4">
+    <app-cadastro-hospede
+      (eventClicked)="confereCarregarTabela(true)"
+    ></app-cadastro-hospede>
+  </div>
+  <div class="mt-2">
+    <app-check-in></app-check-in>
+  </div>
+  <div class="mt-2">
+    <app-tabela-hospede [recarregarTabela]="reloadTable"></app-tabela-hospede>
+  </div>
+</div>
+<router-outlet></router-outlet>
+<footer class="footer page-footer font-small text-white bg-dark pt-4 mt-5">
+  <div class="text-center py-3">
+    GitHub:
+    <a href="https://github.com/Artilheiroz" target="_blank">
+      github.com/Artilheiroz
+    </a>
+  </div>
+</footer>

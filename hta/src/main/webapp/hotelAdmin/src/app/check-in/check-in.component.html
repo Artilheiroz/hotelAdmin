@@ -1,0 +1,71 @@
+<div class="card">
+  <div class="card-header text-white bg-primary">
+    Novo Check in
+  </div>
+  <div class="card-body container">
+    <div class="row">
+      <div class="col-md">
+        <div class="form-group">
+          <label for="estadia.dataEntrada">Data/hora de entrada</label>
+          <input
+            id="estadia.dataEntrada"
+            type="datetime-local"
+            class="form-control"
+            [(ngModel)]="estadia.dataEntrada"
+          />
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-group">
+          <label for="estadia.dataSaida">Data/hora de saida</label>
+          <input
+            id="estadia.dataSaida"
+            type="datetime-local"
+            class="form-control"
+            [(ngModel)]="estadia.dataSaida"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md">
+        <div class="form-group">
+          <label for="estadia.hospede">Pessoa</label>
+          <select
+            id="estadia.hospede"
+            class="form-control"
+            [(ngModel)]="estadia.hospede"
+          >
+            <option value="">Selecione uma Pessoa</option>
+            <option *ngFor="let hospede of hospedes" [ngValue]="hospede">
+              {{ hospede.nome }} - {{ hospede.documento }} -
+              {{ hospede.telefone }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-check" style="padding-top: 2em;">
+          <input
+            id="estadia.adicionalVeiculo"
+            type="checkbox"
+            class="form-check-input"
+            [(ngModel)]="estadia.adicionalVeiculo"
+          />
+          <label class="form-check-label" for="estadia.adicionalVeiculo">
+            Possui Veiculo
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button
+        type="button"
+        class="btn btn-primary ml-3"
+        (click)="salvarCheckin()"
+      >
+        Salvar
+      </button>
+    </div>
+  </div>
+</div>

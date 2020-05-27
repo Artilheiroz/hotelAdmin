@@ -1,0 +1,73 @@
+<div class="card">
+  <div class="card-header text-white bg-primary">
+    Consultas
+  </div>
+  <div class="card-body">
+    <div>
+      <span>Filtrar Por:</span>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-check" style="padding-top: 2em;">
+            <input
+              id="ainda-hotel"
+              type="checkbox"
+              class="form-check-input"
+              [(ngModel)]="searchPresentes"
+              (change)="
+                searchPresentes ? getHospedesPresentes() : getTodosHospedes()
+              "
+            />
+            <label class="form-check-label" for="ainda-hotel">
+              Pessoas ainda presentes
+            </label>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <div class="form-check" style="padding-top: 2em;">
+            <input
+              id="fora-hotel"
+              type="checkbox"
+              class="form-check-input"
+              [(ngModel)]="searchPassados"
+              (change)="
+                searchPassados ? getHospedesPassados() : getTodosHospedes()
+              "
+            />
+            <label class="form-check-label" for="fora-hotel">
+              Pessoas que já deixaram o hotel
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4">
+      <table class="table table-sm">
+        <thead>
+          <tr class="d-flex">
+            <th class="col-6">Nome</th>
+            <th class="col-3">Documento</th>
+            <th class="col-3">Valor Gasto (R$)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="d-flex"
+            *ngFor="
+              let hospede of hospedes
+                | slice: (page - 1) * pageSize:(page - 1) * pageSize + pageSize
+            "
+          >
+            <td class="col-sm-6">{{ hospede.nome }}</td>
+            <td class="col-sm-3">{{ hospede.documento }}</td>
+            <td class="col-sm-3">{{ hospede.valorTotalEstadias }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <ngb-pagination
+        [(page)]="page"
+        [pageSize]="pageSize"
+        [collectionSize]="hospedes.length"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>
