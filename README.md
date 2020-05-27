@@ -1,7 +1,7 @@
-#HotelAdmin
+# HotelAdmin
 WebApp utilizando Angular 9, Bootstrap 4, WebServices RESTful com Java SpringBoot
 
-##Back-End
+## Back-End
 Desenvolvido em Java utilizando Spring Boot, serviços web RESTful, Hibernate para comunidade de bancod e dados PostgreSql
 ### Pré-Requisitos
 - Java JDK 8+  [Download JDK](https://www.oracle.com/technetwork/pt/java/javase/downloads/index.html "Download JDK");
