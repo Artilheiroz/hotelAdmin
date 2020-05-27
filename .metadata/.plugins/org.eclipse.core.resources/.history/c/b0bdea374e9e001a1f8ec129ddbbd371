@@ -1,0 +1,20 @@
+package com.hotalAdmin.hta.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.hotalAdmin.hta.model.Estadia;
+import com.hotalAdmin.hta.repository.EstadiaRepository;
+
+public class EstadiaService {
+
+	@Autowired
+	private EstadiaRepository estadiaRepository;
+
+	public List<Estadia> getEstadias() {
+		List<Estadia> findAll = estadiaRepository.findAll();
+		return findAll;
+	}
+
+}

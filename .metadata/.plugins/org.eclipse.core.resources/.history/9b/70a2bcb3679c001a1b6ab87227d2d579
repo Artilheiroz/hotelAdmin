@@ -1,0 +1,89 @@
+package com.hotalAdmin.hta.dao;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+import com.hotalAdmin.hta.model.Guest;
+
+public class GuestJpaDAO {
+
+	private static GuestJpaDAO instance;
+	protected EntityManager entityManager;
+
+	public static GuestJpaDAO getInstance() {
+		if (instance == null) {
+			instance = new GuestJpaDAO();
+		}
+
+		return instance;
+	}
+
+	private GuestJpaDAO() {
+		entityManager = getEntityManager();
+	}
+
+	private EntityManager getEntityManager() {
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("hotelAdminHibernate");
+		if (entityManager == null) {
+			entityManager = factory.createEntityManager();
+		}
+
+		return entityManager;
+	}
+
+	public Guest getById(final int id) {
+		return entityManager.find(Guest.class, id);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Guest> findAll() {
+		return entityManager.createQuery("FROM " + Guest.class.getName()).getResultList();
+	}
+
+	public void persist(Guest guest) {
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.persist(guest);
+			entityManager.getTransaction().commit();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			entityManager.getTransaction().rollback();
+		}
+	}
+
+	public void merge(Guest guest) {
+		try {
+			entityManager.getTransaction().begin();
+			entityManager.merge(guest);
+			entityManager.getTransaction().commit();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			entityManager.getTransaction().rollback();
+		}
+	}
+
+	public void remove(Guest guest) {
+		try {
+			entityManager.getTransaction().begin();
+			guest = entityManager.find(Guest.class, guest.getId());
+			entityManager.remove(guest);
+			entityManager.getTransaction().commit();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			entityManager.getTransaction().rollback();
+		}
+	}
+
+	public void removeById(final int id) {
+		try {
+			Guest guest = getById(id);
+			remove(guest);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+}

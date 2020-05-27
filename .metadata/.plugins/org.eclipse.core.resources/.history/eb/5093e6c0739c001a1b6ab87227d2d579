@@ -1,0 +1,30 @@
+package com.hotalAdmin.hta.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
+
+import com.hotalAdmin.hta.model.Guest;
+import com.hotalAdmin.hta.repository.GuestRepository;
+
+
+@RestController
+@RequestMapping("/hotelAdmin")
+public class GuestController {
+
+	@Autowired
+	private GuestRepository guestRepository;
+
+	@GetMapping("/guests")
+	public Page<Guest> getGuests(Pageable pageable) {
+		return guestRepository.findAll(pageable);
+	}
+	
+	@PostMapping("/createGuests")
+	public Guest createGuests(@Valid @RequestBody Guest guest) {
+		
+		//return guestRepository.findAll(pageable);
+	}
+
+}

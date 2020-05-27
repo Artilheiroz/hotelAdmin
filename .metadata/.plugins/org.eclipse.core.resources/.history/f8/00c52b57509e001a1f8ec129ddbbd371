@@ -1,0 +1,37 @@
+package com.hotalAdmin.hta.service;
+
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.hotalAdmin.hta.model.Estadia;
+import com.hotalAdmin.hta.model.Hospede;
+import com.hotalAdmin.hta.repository.EstadiaRepository;
+
+public class EstadiaService {
+
+	@Autowired
+	private EstadiaRepository estadiaRepository;
+
+	public List<Estadia> getEstadias() {
+		List<Estadia> findAll = estadiaRepository.findAll();
+		return findAll;
+	}
+	
+	public Page<Estadia> getEstadiasPageable(Pageable pageable) {
+		return estadiaRepository.findAll(pageable);
+	}
+	
+	public Estadia createEstadia(Estadia estadia) {
+		estadia = estadiaRepository.save(estadia);
+		return estadia;
+	}
+	
+	public Estadia createEstadia(Hospede hospede, GregorianCalendar dataEntrada, GregorianCalendar dataSaida, Boolean adicionalVeiculo) {
+		Estadia estadia = new Estadia(hospede, dataEntrada, dataSaida, adicionalVeiculo);
+	}
+
+}

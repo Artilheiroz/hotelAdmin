@@ -1,0 +1,57 @@
+package com.hotalAdmin.hta.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hotalAdmin.hta.model.Guest;
+import com.hotalAdmin.hta.repository.GuestRepository;
+
+@RestController
+@RequestMapping("/hotelAdmin")
+public class GuestController {
+
+	@Autowired
+	private GuestRepository guestRepository;
+
+	@GetMapping("/getGuests")
+	public Page<Guest> getGuests(Pageable pageable) {
+		return guestRepository.findAll(pageable);
+	}
+
+	@PostMapping("/createGuests")
+	public Guest createGuests(@RequestBody Guest guest) {
+		guestRepository.save(guest);
+		return guest;
+	}
+
+	@PutMapping("/updadeGuest/{guestId}")
+	public Guest updadeGuest(@PathVariable Long guestId, @RequestBody Guest updatedGuest) throws Exception {
+		return guestRepository.findById(guestId).map(guest -> {
+			guest.setName(updatedGuest.getName());
+			guest.setDocument(updatedGuest.getDocument());
+			guest.setTelephone(updatedGuest.getTelephone());
+			guestRepository.save(guest);
+			return guest;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+
+	}
+
+	@DeleteMapping("/deleteGuest/{guestId}")
+	public ResponseEntity<?> deleteGuest(@PathVariable Long guestId) throws Exception {
+		return guestRepository.findById(guestId).map(guest -> {
+			guestRepository.delete(guest);
+			return ResponseEntity.ok().build();
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+	}
+
+}

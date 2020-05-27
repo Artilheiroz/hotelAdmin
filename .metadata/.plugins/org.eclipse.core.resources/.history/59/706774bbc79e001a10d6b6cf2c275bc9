@@ -1,0 +1,12 @@
+package com.hotalAdmin.hta.hospede;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface HospedeRepository extends JpaRepository<Hospede, Long> {
+
+	@Query(value = "select * from hospede where nome ilike '''%?0%'''", nativeQuery = true)
+	Hospede findByNome(String nome);
+}

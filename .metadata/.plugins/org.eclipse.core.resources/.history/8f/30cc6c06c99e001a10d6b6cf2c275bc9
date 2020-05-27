@@ -1,0 +1,15 @@
+package com.hotalAdmin.hta.hospede;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface HospedeRepository extends JpaRepository<Hospede, Long> {
+
+	//@Query(value = "select * from hospede where nome ilike '''%?0%'''", nativeQuery = true)
+	@Query("select h from Hospede h where lower(h.nome) like lower(%?1%)")
+	List<Hospede> findByNome(String nome);
+}

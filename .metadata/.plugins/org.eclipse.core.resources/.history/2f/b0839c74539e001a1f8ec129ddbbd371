@@ -1,0 +1,80 @@
+package com.hotalAdmin.hta.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.hotalAdmin.hta.model.Hospede;
+import com.hotalAdmin.hta.repository.HospedeRepository;
+
+public class HospedeService {
+
+	@Autowired
+	private HospedeRepository hospedeRepository;
+
+	public List<Hospede> getHospedes() {
+		List<Hospede> hospedes = hospedeRepository.findAll();
+
+		return hospedes;
+	}
+
+	public Page<Hospede> getHospedesPageable(Pageable pageable) {
+		Page<Hospede> hospedes = hospedeRepository.findAll(pageable);
+
+		return hospedes;
+	}
+	
+	public Hospede getHospedeById(Long hospedeId) {
+		Hospede hospede = hospedeRepository.findById(hospedeId).get()
+		
+		return hospede;
+	}
+
+	public Hospede createHospede(Hospede hospede) {
+		hospede = hospedeRepository.save(hospede);
+
+		return hospede;
+	}
+
+	public Hospede createHospede(String nome, String documento, String telefone) {
+		Hospede hospede = new Hospede(nome, documento, telefone);
+		hospede = hospedeRepository.save(hospede);
+
+		return hospede;
+	}
+
+	public Hospede updateHospede(Long hospedeId, Hospede updatedHospede) throws Exception {
+		Hospede hospede = hospedeRepository.findById(hospedeId).map(foundHospede -> {
+			foundHospede.setNome(updatedHospede.getNome());
+			foundHospede.setDocumento(updatedHospede.getDocumento());
+			foundHospede.setTelefone(updatedHospede.getTelefone());
+			foundHospede = hospedeRepository.save(foundHospede);
+			return foundHospede;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+
+		return hospede;
+	}
+
+	public Hospede updateHospede(Long hospedeId, String nome, String documento, String telefone) throws Exception {
+		Hospede hospede = hospedeRepository.findById(hospedeId).map(foundHospede -> {
+			foundHospede.setNome(nome);
+			foundHospede.setDocumento(documento);
+			foundHospede.setTelefone(telefone);
+			foundHospede = hospedeRepository.save(foundHospede);
+			return foundHospede;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+
+		return hospede;
+	}
+
+	public Boolean deleteHospede(Long hospedeId) {
+		Boolean deleated = hospedeRepository.findById(hospedeId).map(hospede -> {
+			hospedeRepository.delete(hospede);
+			return true;
+		}).orElse(false);
+		
+		return deleated;
+	}
+}

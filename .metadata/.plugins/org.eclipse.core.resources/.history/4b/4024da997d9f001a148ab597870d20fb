@@ -1,0 +1,5 @@
+package com.hotalAdmin.hta.config;
+
+public class WebConfig {
+
+}

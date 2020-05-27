@@ -1,0 +1,14 @@
+package com.hotalAdmin.hta.estadia;
+
+import java.util.Date;
+
+import com.hotalAdmin.hta.hospede.Hospede;
+
+public class EstadiaDTO {
+
+	private Hospede hospede;
+	private Date dataEntrada;
+	private Date dataSaida;
+	private Boolean adicionalVeiculo;
+
+}

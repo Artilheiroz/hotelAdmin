@@ -1,0 +1,5 @@
+package com.hotalAdmin.hta.estadia;
+
+public class EstadiaDTO {
+
+}

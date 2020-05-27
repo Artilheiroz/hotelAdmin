@@ -1,0 +1,22 @@
+package com.hotalAdmin.hta.controller;
+
+import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hotalAdmin.hta.repository.GuestRepository;
+
+
+@RestController
+public class GuestController2 {
+
+	@Autowired
+	private GuestRepository guestRepository;
+
+	@GetMapping("/guests")
+	public JSONArray getGuests() {
+		return new JSONArray(guestRepository.findAll());
+	}
+
+}

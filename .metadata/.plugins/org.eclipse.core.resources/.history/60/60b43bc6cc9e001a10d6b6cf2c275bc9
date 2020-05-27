@@ -1,0 +1,162 @@
+package com.hotalAdmin.hta.estadia;
+
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import javax.xml.bind.DatatypeConverter;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import com.hotalAdmin.hta.hospede.Hospede;
+
+@Service
+public class EstadiaService {
+
+	@Autowired
+	private EstadiaRepository estadiaRepository;
+
+	public List<Estadia> getEstadias() {
+		List<Estadia> findAll = estadiaRepository.findAll();
+		return findAll;
+	}
+
+	public Page<Estadia> getEstadiasPageable(Pageable pageable) {
+		return estadiaRepository.findAll(pageable);
+	}
+
+	public Estadia getEstadiaById(Long estadiaId) {
+		Estadia estadia = estadiaRepository.findById(estadiaId).get();
+
+		return estadia;
+	}
+
+	public Estadia createEstadia(EstadiaDTO dto) {
+		Estadia estadia = dto.toEstadia();
+		estadia.setValor(calculateValor(estadia));
+		estadia = estadiaRepository.save(estadia);
+
+		return estadia;
+	}
+
+	public Estadia createEstadia(Hospede hospede, String dataEntradaString, String dataSaidaString,
+			Boolean adicionalVeiculo) {
+		Estadia estadia = null;
+		estadia = new Estadia(hospede, DatatypeConverter.parseDateTime(dataEntradaString),
+				DatatypeConverter.parseDateTime(dataSaidaString), adicionalVeiculo);
+		estadia.setValor(calculateValor(estadia));
+		estadia = estadiaRepository.save(estadia);
+
+		return estadia;
+	}
+
+	public Estadia createEstadia(Hospede hospede, Calendar dataEntrada, Calendar dataSaida, Boolean adicionalVeiculo) {
+		Estadia estadia = new Estadia(hospede, dataEntrada, dataSaida, adicionalVeiculo);
+		estadia.setValor(calculateValor(estadia));
+		estadia = estadiaRepository.save(estadia);
+
+		return estadia;
+	}
+
+	public Estadia updateEstadia(Long estadiaId, EstadiaDTO dto) throws Exception {
+		Estadia updatedEstadia = dto.toEstadia();
+		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
+			foundEstadia.setHospede(updatedEstadia.getHospede());
+			foundEstadia.setDataEntrada(updatedEstadia.getDataEntrada());
+			foundEstadia.setDataSaida(updatedEstadia.getDataSaida());
+			foundEstadia.setAdicionalVeiculo(updatedEstadia.getAdicionalVeiculo());
+			foundEstadia.setValor(calculateValor(foundEstadia));
+			foundEstadia = estadiaRepository.save(foundEstadia);
+			return foundEstadia;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+		// TODO: Tratar erro melhor
+
+		return estadia;
+	}
+
+	public Estadia updateEstadia(Long estadiaId, Hospede hospede, Calendar dataEntrada, Calendar dataSaida,
+			Boolean adicionalVeiculo) throws Exception {
+		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
+			foundEstadia.setHospede(hospede);
+			foundEstadia.setDataEntrada(dataEntrada);
+			foundEstadia.setDataSaida(dataSaida);
+			foundEstadia.setAdicionalVeiculo(adicionalVeiculo);
+			foundEstadia.setValor(calculateValor(foundEstadia));
+			foundEstadia = estadiaRepository.save(foundEstadia);
+			return foundEstadia;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+		// TODO: Tratar erro melhor
+
+		return estadia;
+	}
+
+	public Estadia updateEstadia(Long estadiaId, Hospede hospede, String dataEntradaString, String dataSaidaString,
+			Boolean adicionalVeiculo) throws Exception {
+		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
+			foundEstadia.setHospede(hospede);
+			foundEstadia.setDataEntrada(DatatypeConverter.parseDateTime(dataEntradaString));
+			foundEstadia.setDataSaida(DatatypeConverter.parseDateTime(dataSaidaString));
+			foundEstadia.setAdicionalVeiculo(adicionalVeiculo);
+			foundEstadia.setValor(calculateValor(foundEstadia));
+			foundEstadia = estadiaRepository.save(foundEstadia);
+			return foundEstadia;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+		// TODO: Tratar erro melhor
+
+		return estadia;
+	}
+
+	public Boolean deleteEstadia(Estadia estadia) {
+		estadiaRepository.delete(estadia);
+
+		return true;
+	}
+
+	public Boolean deleteEstadiaById(Long estadiaId) {
+		estadiaRepository.deleteById(estadiaId);
+
+		return true;
+	}
+
+	public BigDecimal calculateValor(Estadia estadia) {
+		Calendar dataEntrada = estadia.getDataEntrada();
+		Calendar dataSaida = estadia.getDataSaida();
+		Calendar dataAnalizada = new GregorianCalendar();
+		dataAnalizada.setTime(dataEntrada.getTime());
+		BigDecimal valor = BigDecimal.ZERO;
+		int weekDays = 0;
+		int weekEndDays = 0;
+		int weekValue = 120 + (estadia.getAdicionalVeiculo() ? 15 : 0);
+		int weekEndValue = 150 + (estadia.getAdicionalVeiculo() ? 20 : 0);
+
+		do {
+			if (dataAnalizada.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+					|| dataAnalizada.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+				weekEndDays++;
+			} else {
+				weekDays++;
+			}
+			dataAnalizada.add(Calendar.DAY_OF_MONTH, 1);
+
+		} while (dataAnalizada.before(dataSaida));
+
+		if (dataSaida.get(Calendar.HOUR_OF_DAY) > 16
+				|| (dataSaida.get(Calendar.HOUR_OF_DAY) == 16 && dataSaida.get(Calendar.MINUTE) > 30)) {
+			if (dataAnalizada.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY
+					|| dataAnalizada.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+				weekEndDays++;
+			} else {
+				weekDays++;
+			}
+		}
+
+		valor = valor.add(new BigDecimal((weekDays * weekValue) + (weekEndDays * weekEndValue)));
+
+		return valor;
+	}
+
+}

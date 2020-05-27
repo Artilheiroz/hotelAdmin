@@ -1,0 +1,5 @@
+package com.hotalAdmin.hta.repository;
+
+public class GuestRepository {
+
+}

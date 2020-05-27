@@ -1,0 +1,8 @@
+package com.hotalAdmin.hta.repository;
+
+import com.hotalAdmin.hta.model.Guest;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface GuestRepository2 extends JpaRepository<Guest, Long> {
+
+}

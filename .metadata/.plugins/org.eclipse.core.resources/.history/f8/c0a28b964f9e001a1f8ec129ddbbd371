@@ -1,0 +1,82 @@
+package com.hotalAdmin.hta.model;
+
+import java.util.GregorianCalendar;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "estadia")
+public class Estadia {
+
+	public Estadia(Hospede hospede, GregorianCalendar dataEntrada, GregorianCalendar dataSaida,
+			Boolean adicionalVeiculo) {
+		this.hospede = hospede;
+		this.dataEntrada = dataEntrada;
+		this.dataSaida = dataSaida;
+		this.adicionalVeiculo = adicionalVeiculo;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "fk_hospede")
+	private Hospede hospede;
+
+	@Column
+	private GregorianCalendar dataEntrada;
+
+	@Column
+	private GregorianCalendar dataSaida;
+
+	@Column
+	private Boolean adicionalVeiculo;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Hospede getHospede() {
+		return hospede;
+	}
+
+	public void setHospede(Hospede hospede) {
+		this.hospede = hospede;
+	}
+
+	public GregorianCalendar getDataEntrada() {
+		return dataEntrada;
+	}
+
+	public void setDataEntrada(GregorianCalendar dataEntrada) {
+		this.dataEntrada = dataEntrada;
+	}
+
+	public GregorianCalendar getDataSaida() {
+		return dataSaida;
+	}
+
+	public void setDataSaida(GregorianCalendar dataSaida) {
+		this.dataSaida = dataSaida;
+	}
+
+	public Boolean getAdicionalVeiculo() {
+		return adicionalVeiculo;
+	}
+
+	public void setAdicionalVeiculo(Boolean adicionalVeiculo) {
+		this.adicionalVeiculo = adicionalVeiculo;
+	}
+}

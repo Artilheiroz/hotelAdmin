@@ -1,0 +1,124 @@
+package com.hotalAdmin.hta.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hotalAdmin.hta.model.Estadia;
+import com.hotalAdmin.hta.repository.EstadiaRepository;
+import com.hotalAdmin.hta.service.EstadiaService;
+
+@RestController
+@RequestMapping("/estadias")
+public class EstadiaController {
+
+	@Autowired
+	private EstadiaService estadiaService;
+
+	@GetMapping("/getEstadias")
+	public ResponseEntity<List<Estadia>> getEstadias() {
+
+		ResponseEntity<List<Estadia>> response = null;
+		try {
+			List<Estadia> hospedes = estadiaService.getEstadias();
+			response = ResponseEntity.ok(hospedes);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+
+	}
+
+	@GetMapping("/getEstadiasPageable")
+	public ResponseEntity<Page<Estadia>> getEstadiasPageable(Pageable pageable) {
+
+		ResponseEntity<Page<Estadia>> response = null;
+		try {
+			Page<Estadia> hospedes = estadiaService.getEstadiasPageable(pageable);
+			response = ResponseEntity.ok(hospedes);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@GetMapping("/getEstadia/{estadiaId}")
+	public ResponseEntity<Estadia> getEstadia(@PathVariable Long estadiaId) {
+
+		ResponseEntity<Estadia> response = null;
+		try {
+			Estadia estadia = estadiaService.getEstadiaById(estadiaId);
+
+			response = ResponseEntity.ok(estadia);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@PostMapping("/createEstadias")
+	public ResponseEntity<Estadia> createEstadias(@RequestBody Estadia estadia) {
+
+		ResponseEntity<Estadia> response = null;
+		try {
+			Estadia newEstadia = estadiaService.createEstadia(estadia);
+
+			response = ResponseEntity.ok(newEstadia);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@PutMapping("/updadeEstadia/{estadiaId}")
+	public ResponseEntity<Estadia> updadeEstadia(@PathVariable Long estadiaId, @RequestBody Estadia updatedEstadia) {
+
+		ResponseEntity<Estadia> response = null;
+		try {
+			Estadia estadia = estadiaService.updateEstadia(estadiaId, updatedEstadia);
+
+			response = ResponseEntity.ok(estadia);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@DeleteMapping("/deleteEstadia/{estadiaId}")
+	public ResponseEntity<Boolean> deleteEstadia(@PathVariable Long estadiaId) {
+
+		ResponseEntity<Boolean> response = null;
+		try {
+			Boolean deleated = estadiaService.deleteEstadiaById(estadiaId);
+
+			response = ResponseEntity.ok(deleated);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+}

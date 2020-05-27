@@ -1,0 +1,125 @@
+package com.hotalAdmin.hta.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hotalAdmin.hta.model.Hospede;
+import com.hotalAdmin.hta.service.HospedeService;
+
+@RestController
+@RequestMapping("/hospedes")
+public class HospedeController {
+
+	@Autowired
+	private HospedeService hospedeService;
+
+	@GetMapping("/getHospedes")
+	public ResponseEntity<?> getHospedes() {
+
+		ResponseEntity<List<Hospede>> response = null;
+		try {
+			List<Hospede> hospedes = hospedeService.getHospedes();
+			response = ResponseEntity.ok(hospedes);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@GetMapping("/getHospedesPageable")
+	public ResponseEntity<?> getHospedesPageable(Pageable pageable) {
+
+		ResponseEntity<Page<Hospede>> response = null;
+		try {
+			Page<Hospede> hospedesPageable = hospedeService.getHospedesPageable(pageable);
+			response = ResponseEntity.ok(hospedesPageable);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@GetMapping("/getHospede/{hospedeId}")
+	public ResponseEntity<?> getHospede(@PathVariable Long hospedeId) {
+
+		ResponseEntity<Hospede> response = null;
+		try {
+			Hospede hospede = hospedeService.getHospedeById(hospedeId);
+			response = ResponseEntity.ok(hospede);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@PostMapping("/createHospedes")
+	public ResponseEntity<?> createHospedes(@RequestBody Hospede hospede) {
+		
+		ResponseEntity<Hospede> response = null;
+		try {
+			hospede = hospedeService.createHospede(hospede);
+			response = ResponseEntity.ok(hospede);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@PutMapping("/updadeHospede/{hospedeId}")
+	public ResponseEntity<?> updadeHospede(@PathVariable Long hospedeId, @RequestBody Hospede hospede)
+			throws Exception {
+		
+		ResponseEntity<Hospede> response = null;
+		try {
+			hospede = hospedeService.updateHospede(hospedeId, hospede);
+			response = ResponseEntity.ok(hospede);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+	}
+
+	@DeleteMapping("/deleteHospede/{hospedeId}")
+	public ResponseEntity<?> deleteHospede(@PathVariable Long hospedeId) {
+		
+		ResponseEntity<Boolean> response = null;
+		try {
+			Boolean dealeted = hospedeService.deleteHospede(hospedeId);
+			response = ResponseEntity.ok(dealeted);
+		} catch (Exception e) {
+			// TODO: Tratar erro melhor
+			response = ResponseEntity.status(500).build();
+		}
+
+		return response;
+		
+		
+		return hospedeRepository.findById(hospedeId).map(hospede -> {
+			hospedeRepository.delete(hospede);
+			return ResponseEntity.ok().build();
+		}).orElse(ResponseEntity.notFound().build());
+	}
+
+}

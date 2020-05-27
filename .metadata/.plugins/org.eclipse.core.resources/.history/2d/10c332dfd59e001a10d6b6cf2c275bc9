@@ -1,0 +1,78 @@
+package com.hotalAdmin.hta.hospede;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+import com.hotalAdmin.hta.estadia.Estadia;
+
+public class HospedeResponseDTO {
+
+	private Long id;
+	private String nome;
+	private String documento;
+	private String telefone;
+	private List<Estadia> estadias;
+	private BigDecimal ultimoValor;
+	private BigDecimal valorTotal;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getDocumento() {
+		return documento;
+	}
+
+	public void setDocumento(String documento) {
+		this.documento = documento;
+	}
+
+	public String getTelefone() {
+		return telefone;
+	}
+
+	public void setTelefone(String telefone) {
+		this.telefone = telefone;
+	}
+
+	public List<Estadia> getEstadias() {
+		return estadias;
+	}
+
+	public void setEstadias(List<Estadia> estadias) {
+		this.estadias = estadias;
+	}
+
+	public BigDecimal getUltimoValor() {
+		return ultimoValor;
+	}
+
+	public void setUltimoValor(BigDecimal ultimoValor) {
+		this.ultimoValor = ultimoValor;
+	}
+
+	public BigDecimal getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(BigDecimal valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+	
+	
+	
+	
+
+}

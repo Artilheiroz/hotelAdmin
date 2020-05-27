@@ -1,0 +1,3 @@
+INSERT INTO GUEST (name, document, telephone) values ('Lucas', 123, '123');
+
+COMMIT

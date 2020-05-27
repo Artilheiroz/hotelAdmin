@@ -1,0 +1,5 @@
+package com.hotalAdmin.hta.service;
+
+public class GuestService {
+
+}

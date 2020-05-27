@@ -1,0 +1,14 @@
+package com.hotalAdmin.hta.estadia;
+
+import java.util.Calendar;
+
+import com.hotalAdmin.hta.hospede.Hospede;
+
+public class EstadiaDTO {
+
+	private Hospede hospede;
+	private Calendar dataEntrada;
+	private Calendar dataSaida;
+	private Boolean adicionalVeiculo;
+
+}

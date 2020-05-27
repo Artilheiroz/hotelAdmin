@@ -1,0 +1,9 @@
+package com.hotalAdmin.hta;
+
+import org.springframework.data.repository.CrudRepository;
+
+import com.hotalAdmin.hta.model.Guest;
+
+public interface RestRepository extends CrudRepository<Guest, Long>{
+
+}

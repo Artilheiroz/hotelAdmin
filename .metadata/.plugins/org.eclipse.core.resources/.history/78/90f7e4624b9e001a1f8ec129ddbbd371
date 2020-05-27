@@ -1,0 +1,61 @@
+package com.hotalAdmin.hta.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hotalAdmin.hta.model.Hospede;
+import com.hotalAdmin.hta.repository.HospedeRepository;
+
+@RestController
+@RequestMapping("/hotelAdmin")
+public class HospedeController {
+
+	@Autowired
+	private HospedeRepository hospedeRepository;
+
+	@GetMapping("/getHospedes")
+	public Page<Hospede> getHospedes(Pageable pageable) {
+		return hospedeRepository.findAll(pageable);
+	}
+	
+	@GetMapping("/getHospede/{hospedeId}")
+	public Hospede getHospede(@PathVariable Long hospedeId) {
+		return hospedeRepository.findById(hospedeId).get();
+	}
+
+	@PostMapping("/createHospedes")
+	public Hospede createHospedes(@RequestBody Hospede hospede) {
+		return hospedeRepository.save(hospede);
+	}
+
+	@PutMapping("/updadeHospede/{hospedeId}")
+	public Hospede updadeHospede(@PathVariable Long hospedeId, @RequestBody Hospede updatedHospede) throws Exception {
+		return hospedeRepository.findById(hospedeId).map(hospede -> {
+			hospede.setNome(updatedHospede.getNome());
+			hospede.setDocumento(updatedHospede.getDocumento());
+			hospede.setTelefone(updatedHospede.getTelefone());
+			hospedeRepository.save(hospede);
+			return hospede;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+
+	}
+
+	@DeleteMapping("/deleteHospede/{hospedeId}")
+	public ResponseEntity<?> deleteHospede(@PathVariable Long hospedeId) {
+		return hospedeRepository.findById(hospedeId).map(hospede -> {
+			hospedeRepository.delete(hospede);
+			return ResponseEntity.ok().build();
+		}).orElse(ResponseEntity.notFound().build());
+	}
+
+}

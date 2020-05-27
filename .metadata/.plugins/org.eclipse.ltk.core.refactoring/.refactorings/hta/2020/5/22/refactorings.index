@@ -1,0 +1,25 @@
+1590384598335	Rename type 'GuestController'
+1590384604842	Rename type 'Guest'
+1590384615079	Rename type 'GuestRepository'
+1590384623721	Rename type 'GuestService'
+1590385667554	Copy compilation unit
+1590385686947	Copy compilation unit
+1590386677794	Extract local variable 'estadiasPageable'
+1590387211679	Rename field 'dataEntada'
+1590392763788	Extract local variable 'parseDateTime'
+1590430898717	Rename package 'com.hotalAdmin.hta.Hospede'
+1590430904690	Move compilation unit
+1590430907917	Move compilation unit
+1590430911371	Move compilation unit
+1590430915521	Move compilation unit
+1590430920512	Move compilation unit
+1590430923615	Move compilation unit
+1590430926934	Move compilation unit
+1590430930404	Move compilation unit
+1590430936808	Delete elements
+1590432600521	Delete element
+1590433238982	Copy compilation unit
+1590433248751	Rename type 'EstadiaDTO'
+1590445199814	Delete element
+1590445955168	Extract local variable 'estadias'
+1590470185068	Delete element

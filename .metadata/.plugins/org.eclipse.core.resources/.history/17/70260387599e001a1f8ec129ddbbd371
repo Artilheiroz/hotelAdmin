@@ -1,0 +1,95 @@
+package com.hotalAdmin.hta.service;
+
+import java.util.GregorianCalendar;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import com.hotalAdmin.hta.model.Estadia;
+import com.hotalAdmin.hta.model.Hospede;
+import com.hotalAdmin.hta.repository.EstadiaRepository;
+
+public class EstadiaService {
+
+	@Autowired
+	private EstadiaRepository estadiaRepository;
+
+	public List<Estadia> getEstadias() {
+		List<Estadia> findAll = estadiaRepository.findAll();
+		return findAll;
+	}
+
+	public Page<Estadia> getEstadiasPageable(Pageable pageable) {
+		return estadiaRepository.findAll(pageable);
+	}
+	
+	public Estadia getHospedeById(Long estadiaId) {
+		Estadia estadia = estadiaRepository.findById(estadiaId).get();
+		
+		return estadia;
+	}
+
+	public Estadia createEstadia(Estadia estadia) {
+		estadia = estadiaRepository.save(estadia);
+		return estadia;
+	}
+
+	public Estadia createEstadia(Hospede hospede, String dataEntradaString, String dataSaidaString,
+			Boolean adicionalVeiculo) {
+		Estadia estadia = null;
+		//estadia = new Estadia(hospede, dataEntrada, dataSaida, adicionalVeiculo); TODO: métode de criação de estadia com datas String ISO-8601
+		return estadia;
+	}
+
+	public Estadia createEstadia(Hospede hospede, GregorianCalendar dataEntrada, GregorianCalendar dataSaida,
+			Boolean adicionalVeiculo) {
+		Estadia estadia = new Estadia(hospede, dataEntrada, dataSaida, adicionalVeiculo);
+		return estadia;
+	}
+	
+	public Estadia updateEstadia(Long estadiaId, Estadia updatedEstadia) throws Exception {
+		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
+			foundEstadia.setHospede(updatedEstadia.getHospede());
+			foundEstadia.setDataEntrada(updatedEstadia.getDataEntrada());
+			foundEstadia.setDataSaida(updatedEstadia.getDataSaida());
+			foundEstadia.setAdicionalVeiculo(updatedEstadia.getAdicionalVeiculo());
+			estadiaRepository.save(foundEstadia);
+			return foundEstadia;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+		// TODO: Tratar erro melhor
+		
+		return estadia;
+	}
+	
+	public Estadia updateEstadia(Long estadiaId, Hospede hospede, GregorianCalendar dataEntrada, GregorianCalendar dataSaida, Boolean adicionalVeiculo) throws Exception {
+		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
+			foundEstadia.setHospede(hospede);
+			foundEstadia.setDataEntrada(dataEntrada);
+			foundEstadia.setDataSaida(dataSaida);
+			foundEstadia.setAdicionalVeiculo(adicionalVeiculo);
+			estadiaRepository.save(foundEstadia);
+			return foundEstadia;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+		// TODO: Tratar erro melhor
+		
+		return estadia;
+	}
+	
+	public Estadia updateEstadia(Long estadiaId, Hospede hospede, String dataEntradaString, String dataSaidaString, Boolean adicionalVeiculo) throws Exception {
+		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
+			foundEstadia.setHospede(hospede);
+			//foundEstadia.setDataEntrada(dataEntradaString);
+			//foundEstadia.setDataSaida(dataSaidaString);
+			// TODO: métode de criação de estadia com datas String ISO-8601
+			foundEstadia.setAdicionalVeiculo(adicionalVeiculo);
+			estadiaRepository.save(foundEstadia);
+			return foundEstadia;
+		}).orElseThrow(() -> new Exception("NOT FOUND"));
+		// TODO: Tratar erro melhor
+		
+		return estadia;
+	}
+
+}

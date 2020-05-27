@@ -1,0 +1,12 @@
+package com.hotalAdmin.hta.hospede;
+
+public class HospedeDTO {
+
+	private String nome;
+	private String documento;
+	private String telefone;
+
+	public Hospede transformaParaObjeto() {
+		return new Hospede(nome, documento, telefone);
+	}
+}

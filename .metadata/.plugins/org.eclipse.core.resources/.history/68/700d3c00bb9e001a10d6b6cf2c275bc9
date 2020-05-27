@@ -1,0 +1,21 @@
+package com.hotalAdmin.hta.estadia;
+
+import java.util.Calendar;
+
+import javax.xml.bind.DatatypeConverter;
+
+import com.hotalAdmin.hta.hospede.Hospede;
+
+public class EstadiaDTO {
+
+	private Hospede hospede;
+	private String dataEntrada;
+	private String dataSaida;
+	private Boolean adicionalVeiculo;
+	
+	public Estadia toEstadia() {
+		Calendar parsedDataEntrada = DatatypeConverter.parseDateTime(dataEntrada);
+		Calendar parsedDataSaida = DatatypeConverter.parseDateTime(dataSaida);
+		return new Estadia (hospede, parsedDataEntrada, parsedDataSaida, adicionalVeiculo);
+	}
+}
