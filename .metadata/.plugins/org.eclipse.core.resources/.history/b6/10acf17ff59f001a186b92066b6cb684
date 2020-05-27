@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.hotalAdmin.hta.estadia.Estadia;
@@ -18,6 +20,15 @@ public class HospedeService {
 	public List<Hospede> getHospedes() {
 		List<Hospede> hospedes = hospedeRepository.findAll();
 		hospedes.parallelStream().forEach(hospede -> {
+			hospede = getValoresEstadias(hospede);
+		});
+
+		return hospedes;
+	}
+
+	public Page<Hospede> getHospedesPageable(Pageable pageable) {
+		Page<Hospede> hospedes = hospedeRepository.findAll(pageable);
+		hospedes.forEach(hospede -> {
 			hospede = getValoresEstadias(hospede);
 		});
 

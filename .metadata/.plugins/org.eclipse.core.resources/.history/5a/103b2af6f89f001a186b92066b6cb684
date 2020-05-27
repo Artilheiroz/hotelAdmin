@@ -38,10 +38,10 @@ public class EstadiaService {
 		return estadia;
 	}
 
-	public Estadia createEstadia(Hospede hospede, String dataEntradaString, String dataSaidaString,
+	public Estadia createEstadia(Hospede pessoa, String dataEntradaString, String dataSaidaString,
 			Boolean adicionalVeiculo) {
 		Estadia estadia = null;
-		estadia = new Estadia(hospede, DatatypeConverter.parseDateTime(dataEntradaString),
+		estadia = new Estadia(pessoa, DatatypeConverter.parseDateTime(dataEntradaString),
 				DatatypeConverter.parseDateTime(dataSaidaString), adicionalVeiculo);
 		estadia.setValor(calculateValor(estadia));
 		estadia = estadiaRepository.save(estadia);
@@ -49,8 +49,8 @@ public class EstadiaService {
 		return estadia;
 	}
 
-	public Estadia createEstadia(Hospede hospede, Calendar dataEntrada, Calendar dataSaida, Boolean adicionalVeiculo) {
-		Estadia estadia = new Estadia(hospede, dataEntrada, dataSaida, adicionalVeiculo);
+	public Estadia createEstadia(Hospede pessoa, Calendar dataEntrada, Calendar dataSaida, Boolean adicionalVeiculo) {
+		Estadia estadia = new Estadia(pessoa, dataEntrada, dataSaida, adicionalVeiculo);
 		estadia.setValor(calculateValor(estadia));
 		estadia = estadiaRepository.save(estadia);
 
@@ -60,7 +60,7 @@ public class EstadiaService {
 	public Estadia updateEstadia(Long estadiaId, EstadiaDTO dto) throws Exception {
 		Estadia updatedEstadia = dto.toEstadia();
 		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
-			foundEstadia.setHospede(updatedEstadia.getHospede());
+			foundEstadia.setPessoa(updatedEstadia.getPessoa());
 			foundEstadia.setDataEntrada(updatedEstadia.getDataEntrada());
 			foundEstadia.setDataSaida(updatedEstadia.getDataSaida());
 			foundEstadia.setAdicionalVeiculo(updatedEstadia.getAdicionalVeiculo());
@@ -73,10 +73,10 @@ public class EstadiaService {
 		return estadia;
 	}
 
-	public Estadia updateEstadia(Long estadiaId, Hospede hospede, Calendar dataEntrada, Calendar dataSaida,
+	public Estadia updateEstadia(Long estadiaId, Hospede pessoa, Calendar dataEntrada, Calendar dataSaida,
 			Boolean adicionalVeiculo) throws Exception {
 		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
-			foundEstadia.setHospede(hospede);
+			foundEstadia.setPessoa(pessoa);
 			foundEstadia.setDataEntrada(dataEntrada);
 			foundEstadia.setDataSaida(dataSaida);
 			foundEstadia.setAdicionalVeiculo(adicionalVeiculo);
@@ -89,10 +89,10 @@ public class EstadiaService {
 		return estadia;
 	}
 
-	public Estadia updateEstadia(Long estadiaId, Hospede hospede, String dataEntradaString, String dataSaidaString,
+	public Estadia updateEstadia(Long estadiaId, Hospede pessoa, String dataEntradaString, String dataSaidaString,
 			Boolean adicionalVeiculo) throws Exception {
 		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
-			foundEstadia.setHospede(hospede);
+			foundEstadia.setPessoa(pessoa);
 			foundEstadia.setDataEntrada(DatatypeConverter.parseDateTime(dataEntradaString));
 			foundEstadia.setDataSaida(DatatypeConverter.parseDateTime(dataSaidaString));
 			foundEstadia.setAdicionalVeiculo(adicionalVeiculo);

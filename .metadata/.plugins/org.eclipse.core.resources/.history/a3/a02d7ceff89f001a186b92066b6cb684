@@ -3,6 +3,8 @@ package com.hotalAdmin.hta.estadia;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,8 +29,8 @@ public class EstadiaController {
 
 		ResponseEntity<List<Estadia>> response = null;
 		try {
-			List<Estadia> hospedes = estadiaService.getEstadias();
-			response = ResponseEntity.ok(hospedes);
+			List<Estadia> pessoas = estadiaService.getEstadias();
+			response = ResponseEntity.ok(pessoas);
 		} catch (Exception e) {
 			// TODO: Tratar erro melhor
 			response = ResponseEntity.status(500).build();

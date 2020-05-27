@@ -8,6 +8,8 @@ import java.util.List;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.hotalAdmin.hta.hospede.Hospede;
@@ -60,7 +62,7 @@ public class EstadiaService {
 	public Estadia updateEstadia(Long estadiaId, EstadiaDTO dto) throws Exception {
 		Estadia updatedEstadia = dto.toEstadia();
 		Estadia estadia = estadiaRepository.findById(estadiaId).map(foundEstadia -> {
-			foundEstadia.setHospede(updatedEstadia.getHospede());
+			foundEstadia.setPessoa(updatedEstadia.getPessoa());
 			foundEstadia.setDataEntrada(updatedEstadia.getDataEntrada());
 			foundEstadia.setDataSaida(updatedEstadia.getDataSaida());
 			foundEstadia.setAdicionalVeiculo(updatedEstadia.getAdicionalVeiculo());
